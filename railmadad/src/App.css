@@ -1,0 +1,48 @@
+.app {
+  font-family: 'Arial', sans-serif;
+}
+
+.banner {
+  background-color: #0056b3;
+  color: white;
+  padding: 20px 0;
+  margin-bottom: 20px;
+}
+
+.container {
+  padding: 20px;
+}
+
+.analysis-output, .complaint-form {
+  background: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  padding: 20px;
+}
+
+.results p {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+footer {
+  background-color: #007bff;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  position: absolute;
+  width: 100%;
+}

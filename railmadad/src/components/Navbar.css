@@ -1,0 +1,17 @@
+.navbar {
+  background-color: #f8f9fa; /* Light grey background */
+  box-shadow: 0 2px 4px rgba(0,0,0,.1); /* Subtle shadow for depth */
+}
+
+.navbar-brand {
+  font-weight: bold;
+  color: #0056b3; /* Deep blue for contrast */
+}
+
+.nav-link {
+  color: #0056b3; /* Uniform color for all links */
+}
+
+.nav-link:hover {
+  color: #004085; /* Slightly darker on hover */
+}

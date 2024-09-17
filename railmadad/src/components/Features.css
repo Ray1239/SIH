@@ -1,0 +1,33 @@
+
+
+.features-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.features-row {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.feature-item {
+  text-align: center;
+  margin: 0 15px;
+}
+
+.feature-icon {
+  font-size: 40px;
+  color: #007bff;
+  background-color: #f0f0f0;
+  border-radius: 50%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.feature-item span {
+  display: block;
+  font-size: 16px;
+  color: #333;
+}
