@@ -23,7 +23,7 @@ def reprocess_complaint_priority(sender, instance, **kwargs):
             instance.category = category
             instance.is_processed = True  # Mark as processed
             instance.metadata = metadata
-            instance.save(update_fields=['priority', 'is_processed', 'category', 'analysis', 'sentiment', 'metadata'])  # Update only the priority and is_processed fields
+            instance.save(update_fields=['priority', 'is_processed', 'category', 'analysis', 'sentiment', 'metadata'])
 
         elif instance.file and instance.file_type() == 'video':
             vid_processor = GeminiProcessor(model=gemini_model)
@@ -43,4 +43,4 @@ def reprocess_complaint_priority(sender, instance, **kwargs):
             instance.category = category
             instance.metadata = metadata
             instance.is_processed = True  # Mark as processed
-            instance.save(update_fields=['priority', 'is_processed', 'category', 'analysis', 'sentiment', 'metadata'])  # Update only the priority and is_processed fields
+            instance.save(update_fields=['priority', 'is_processed', 'category', 'analysis', 'sentiment', 'metadata'])

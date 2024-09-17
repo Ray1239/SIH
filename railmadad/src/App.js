@@ -5,9 +5,11 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ComplaintForm from './components/ComplaintForm';
 import Banner from './components/Banner';
-import './App.css';
 import ResultsDisplay from './components/ResultsDisplay';
 import MetadataFileDisplay from './components/FileNMetaDisplay';
+
+import './App.css';
+import 'leaflet/dist/leaflet.css';
 
 function App() {
   const [results, setResults] = useState(null);
@@ -27,7 +29,7 @@ function App() {
             </div>
             <div className="col-md-4">
               {results && (
-                <MetadataFileDisplay metadata={results.metadata} file={results.file} />
+                <MetadataFileDisplay metadata={results.metadata} file={results.file} location={{"latitude": results.latitude, "longitude": results.longitude}} />
               )}
             </div>
           </div>

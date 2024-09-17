@@ -6,7 +6,9 @@ function Form({ onFormSubmit }) {
     email: '',
     typeOfComplaint: '',
     description: '',
-    file: null
+    file: null,
+    latitude: null,
+    longitude: null
   });
 
   const handleChange = (e) => {
@@ -26,7 +28,27 @@ function Form({ onFormSubmit }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onFormSubmit(formData);
+    
+    // Capture geolocation
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          onFormSubmit({
+            ...formData,
+            latitude,
+            longitude
+          });
+        },
+        (error) => {
+          console.error('Geolocation error:', error);
+          onFormSubmit(formData); // Submit without geolocation if there's an error
+        }
+      );
+    } else {
+      console.warn('Geolocation is not supported by this browser.');
+      onFormSubmit(formData); // Submit without geolocation if it's not supported
+    }
   };
 
   return (

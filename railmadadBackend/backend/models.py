@@ -314,6 +314,8 @@ class Complaint(models.Model):
     sentiment = models.TextField(blank=True)
     category = models.TextField(blank=True)
     metadata = models.JSONField(blank=True, null=True)
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
 
     file = models.FileField(upload_to='complaints/', storage=complaint_file_storage, blank=True)
 

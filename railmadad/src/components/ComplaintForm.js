@@ -9,6 +9,8 @@ function ComplaintForm({ setResults }) {
     description: '',
     priority: '',
     attachment: null,
+    latitude: null,
+    longitude: null
   });
 
   const [loading, setLoading] = useState(false); // To show loading indicator
@@ -25,32 +27,110 @@ function ComplaintForm({ setResults }) {
     e.preventDefault();
     setLoading(true); // Set loading to true while submitting
 
-    const data = new FormData();
-    data.append('mobile', formData.mobile);
-    data.append('PNR', formData.PNR);
-    data.append('description', formData.description);
-    data.append('priority', formData.priority);
-    if (formData.attachment) {
-      data.append('file', formData.attachment);
-    }
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          const updatedFormData = {
+            ...formData,
+            latitude,
+            longitude
+          };
 
-    axios.post('http://localhost:8000/', data, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
+          // Create FormData object and append form data
+          const data = new FormData();
+          data.append('mobile', updatedFormData.mobile);
+          data.append('PNR', updatedFormData.PNR);
+          data.append('description', updatedFormData.description);
+          data.append('priority', updatedFormData.priority);
+          data.append('latitude', updatedFormData.latitude);
+          data.append('longitude', updatedFormData.longitude);
+          if (updatedFormData.attachment) {
+            data.append('file', updatedFormData.attachment);
+          }
+
+          // Submit the form data
+          axios.post('http://localhost:8000/', data, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          })
+          .then(res => {
+            // Fetch the results based on PNR after form submission
+            axios.get(`http://localhost:8000/results/${updatedFormData.PNR}/`)
+              .then(resultRes => {
+                setResults(resultRes.data);  // Update the state with the result
+              })
+              .finally(() => setLoading(false));  // Stop loading when result is fetched
+          })
+          .catch(err => {
+            console.error(err);
+            setLoading(false);  // Stop loading in case of error
+          });
+        },
+        (error) => {
+          console.error('Geolocation error:', error);
+          // Create FormData object and append form data without geolocation
+          const data = new FormData();
+          data.append('mobile', formData.mobile);
+          data.append('PNR', formData.PNR);
+          data.append('description', formData.description);
+          data.append('priority', formData.priority);
+          if (formData.attachment) {
+            data.append('file', formData.attachment);
+          }
+
+          // Submit the form data without geolocation
+          axios.post('http://localhost:8000/', data, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          })
+          .then(res => {
+            // Fetch the results based on PNR after form submission
+            axios.get(`http://localhost:8000/results/${formData.PNR}/`)
+              .then(resultRes => {
+                setResults(resultRes.data);  // Update the state with the result
+              })
+              .finally(() => setLoading(false));  // Stop loading when result is fetched
+          })
+          .catch(err => {
+            console.error(err);
+            setLoading(false);  // Stop loading in case of error
+          });
+        }
+      );
+    } else {
+      console.warn('Geolocation is not supported by this browser.');
+      // Create FormData object and append form data without geolocation
+      const data = new FormData();
+      data.append('mobile', formData.mobile);
+      data.append('PNR', formData.PNR);
+      data.append('description', formData.description);
+      data.append('priority', formData.priority);
+      if (formData.attachment) {
+        data.append('file', formData.attachment);
       }
-    })
-    .then(res => {
-      // Fetch the results based on PNR after form submission
-      axios.get(`http://localhost:8000/results/${formData.PNR}/`)
-        .then(resultRes => {
-          setResults(resultRes.data);  // Update the state with the result
-        })
-        .finally(() => setLoading(false));  // Stop loading when result is fetched
-    })
-    .catch(err => {
-      console.error(err);
-      setLoading(false);  // Stop loading in case of error
-    });
+
+      // Submit the form data without geolocation
+      axios.post('http://localhost:8000/', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then(res => {
+        // Fetch the results based on PNR after form submission
+        axios.get(`http://localhost:8000/results/${formData.PNR}/`)
+          .then(resultRes => {
+            setResults(resultRes.data);  // Update the state with the result
+          })
+          .finally(() => setLoading(false));  // Stop loading when result is fetched
+      })
+      .catch(err => {
+        console.error(err);
+        setLoading(false);  // Stop loading in case of error
+      });
+    }
   };
 
   return (

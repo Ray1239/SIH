@@ -2,7 +2,7 @@
 import React from 'react';
 import MediaRenderer from './mediaRenderer'; // Adjust path if necessary
 
-function MetadataFileDisplay({ metadata, file }) {
+function MetadataFileDisplay({ metadata, file, location }) {
   if (!metadata) {
     return (
       <div className="card p-4 shadow-sm h-100 d-flex justify-content-center align-items-center">
@@ -16,7 +16,6 @@ function MetadataFileDisplay({ metadata, file }) {
       <li className="list-group-item"><strong>Image Format:</strong> {metadata.image_format || 'No image format available'}</li>
       <li className="list-group-item"><strong>Image Size:</strong> {metadata.image_size || 'No image size available'}</li>
       <li className="list-group-item"><strong>Color Mode:</strong> {metadata.color_mode || 'No color mode available'}</li>
-      <li className="list-group-item"><strong>Geolocation:</strong> {metadata.geolocation || 'No geolocation available'}</li>
     </>
   );
 
@@ -37,6 +36,7 @@ function MetadataFileDisplay({ metadata, file }) {
           <li className="list-group-item"><strong>File Size:</strong> {metadata.file_size || 'No file size available'}</li>
           {metadata.file_type && ['.jpg', '.jpeg', '.png', '.gif'].includes(metadata.file_type) && renderImageMetadata()}
           {metadata.file_type && ['.mp4', '.avi', '.mov'].includes(metadata.file_type) && renderVideoMetadata()}
+          <li className="list-group-item"><strong>Geolocation:</strong> {`${location.latitude}, ${location.longitude}` || 'No geolocation available'}</li>
         </ul>
 
         {file && (
