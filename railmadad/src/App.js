@@ -28,9 +28,7 @@ function App() {
               <ResultsDisplay results={results} />
             </div>
             <div className="col-md-4">
-              {results && (
-                <MetadataFileDisplay metadata={results.metadata} file={results.file} location={{"latitude": results.latitude, "longitude": results.longitude}} />
-              )}
+                <MetadataFileDisplay results={results} />
             </div>
           </div>
         </div>

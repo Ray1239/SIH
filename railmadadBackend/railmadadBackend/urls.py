@@ -16,13 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from backend.views import ComplaintView, ComplaintDetailByPNR
+from backend.views import complaint_list, complaint_detail
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', ComplaintView.as_view(), name="rest_view"),
-    path('results/<str:PNR>/', ComplaintDetailByPNR.as_view(), name='complaint-detail-by-pnr'),
+    path('complaints/', complaint_list, name="complaint-list"),
+    path('complaints/<str:pnr>/', complaint_detail, name='complaint-detail'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-

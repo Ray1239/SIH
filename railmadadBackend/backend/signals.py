@@ -1,18 +1,18 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from . models import *
+from . models import Complaint, ImageProcessor, InfoExtractor, GeminiProcessor, image_processor
 
 @receiver(post_save, sender=Complaint)
 def reprocess_complaint_priority(sender, instance, **kwargs):
     # Re-process the priority of the complaint only if it's not already processed
     if not instance.is_processed:
         if instance.file and instance.file_type() == 'image':
-            image_processor = ImageProcessor(device=device, processor_name=processor_name, model_name=model_name)
-            category, score, priority, response = image_processor.process_image(instance.file, instance.description)
+            response = image_processor.process_image(instance.file, instance.description)
 
             ai_description = response.get('analysis', 'No description provided')
             sentiment = response.get('sentiment', 'No sentiment provided')
             category = response.get('category', 'No category provided')
+            priority = response.get('priority', 'No priority provided')
 
             metadataEx = InfoExtractor(instance.file.path)
             metadata = metadataEx.extract_metadata()
@@ -26,8 +26,8 @@ def reprocess_complaint_priority(sender, instance, **kwargs):
             instance.save(update_fields=['priority', 'is_processed', 'category', 'analysis', 'sentiment', 'metadata'])
 
         elif instance.file and instance.file_type() == 'video':
-            vid_processor = GeminiProcessor(model=gemini_model)
-            result = vid_processor.processVideo(file=instance.file.path, description=instance.description)
+            vid_processor = GeminiProcessor()
+            result = vid_processor.process_video(file=instance.file.path, description=instance.description)
 
             priority = result.get('priority', 'No priority provided')
             ai_description = result.get('actions', 'No description provided')

@@ -42,7 +42,7 @@ function MediaRenderer({ results }) {
           <div className="video-frame">
             <video
               controls
-              src={`http://localhost:8000/media/complaints/${results.metadata.file_name}`} // Assuming file path is correct
+              src={`http://localhost:8000/media/complaints/${results.metadata.file_name}`}
               className="video-fluid"
               style={{ width: '100%', border: '1px solid #ddd', borderRadius: '4px' }}
             >
@@ -57,7 +57,7 @@ function MediaRenderer({ results }) {
           <div className="audio-frame">
             <audio
               controls
-              src={results.file} // Assuming file path is correct
+              src={`http://localhost:8000/media/complaints/${results.metadata.file_name}`}
               className="audio-fluid"
               style={{ width: '100%', border: '1px solid #ddd', borderRadius: '4px' }}
             >

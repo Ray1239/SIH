@@ -2,15 +2,18 @@
 import React from 'react';
 import MediaRenderer from './mediaRenderer'; // Adjust path if necessary
 
-function MetadataFileDisplay({ metadata, file, location }) {
-  if (!metadata) {
+function MetadataFileDisplay({results}) {
+  if (!results) {
     return (
       <div className="card p-4 shadow-sm h-100 d-flex justify-content-center align-items-center">
         <p className="text-muted">No metadata available.</p>
       </div>
     );
   }
-
+  const metadata = results.metadata;
+  const location = {"latitude": results.latitude, "longitude": results.longitude};
+  const file = results.file;
+  
   const renderImageMetadata = () => (
     <>
       <li className="list-group-item"><strong>Image Format:</strong> {metadata.image_format || 'No image format available'}</li>
